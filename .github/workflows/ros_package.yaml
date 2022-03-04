@@ -5,9 +5,11 @@ name: Industrial CI
 
 on:
   push:
-     branches: [ main, devel ]
+    branches: [main, devel]
+  pull_request:
+    branches: [main, devel]
   schedule:
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -21,12 +23,12 @@ jobs:
     env:
       ADDITIONAL_DEBS: python-catkin-lint
       PARALLEL_BUILDS: 8
-      PARALLEL_TESTS:  1
+      PARALLEL_TESTS: 1
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: 'ros-industrial/industrial_ci@master' # run industrial_ci
+      - uses: "ros-industrial/industrial_ci@master" # run industrial_ci
         env:
           ROS_DISTRO: ${{ matrix.ROS_DISTRO }}
           ROS_REPO: ${{ matrix.ROS_REPO }}

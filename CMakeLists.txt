@@ -6,8 +6,7 @@ if(CATKIN_DEVEL_PREFIX OR CATKIN_BUILD_BINARY_PACKAGE)
 endif()
 
 # Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++17)
-# add_compile_options(-Wall -Werror)
+# add_compile_options(-std=c++17) add_compile_options(-Wall -Werror)
 
 include(GoogleTest REQUIRED)
 
@@ -33,7 +32,8 @@ if(catkin_FOUND)
     ${PROJECT_NAME}
     CATKIN_DEPENDS
     behaviortree_cpp_v3
-    roscpp)
+    roscpp
+    roslint)
 
   #
   # Build
@@ -65,6 +65,11 @@ if(catkin_FOUND)
     target_link_libraries(${fast_test_target_name} ${PROJECT_NAME}
                           ${catkin_LIBRARIES})
 
+    set(ROSLINT_CPP_OPTS --extensions=h,hpp,cpp)
+    roslint_cpp()
+
+    roslint_custom(catkin_lint --strict -W2 ${PROJECT_SOURCE_DIR})
+    roslint_add_test()
   endif()
 
 else()
