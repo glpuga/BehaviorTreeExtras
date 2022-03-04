@@ -13,7 +13,7 @@ on:
 jobs:
   industrial_ci:
     name: ROS Tests
-    runs-on: slow-runner
+    runs-on: ubuntu-18.04
     strategy:
       matrix: # matrix is the product of entries
         ROS_DISTRO: [melodic]
