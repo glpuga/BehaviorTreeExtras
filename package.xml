@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>behavior_tree_extras</name>
+  <version>0.0.0</version>
+  <description>Behavior Tree toolbox</description>
+  <author email="glpuga@gmail.com">Gerardo Puga</author>
+  <maintainer email="glpuga@gmail.com">Gerardo Puga</maintainer>
+
+  <license>TBD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>behaviortree_cpp_v3</depend>
+  <depend>roscpp</depend>
+  <depend>rostest</depend>
+
+</package>
