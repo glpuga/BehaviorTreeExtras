@@ -6,4 +6,10 @@ FetchContent_Declare(behavior_tree_v3
   GIT_PROGRESS      true
 )
 
+option(BUILD_EXAMPLES   "Build tutorials and examples" OFF)
+option(BUILD_SAMPLES    "Build sample nodes" OFF)
+option(BUILD_UNIT_TESTS "Build the unit tests" OFF)
+option(BUILD_TOOLS "Build commandline tools" OFF)
+option(ENABLE_COROUTINES "Enable boost coroutines" OFF)
+
 FetchContent_MakeAvailable(behavior_tree_v3)
