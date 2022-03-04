@@ -1,0 +1,25 @@
+name: Devel environment build and test
+
+on:
+  push: # this needs to run on the main and devel branches so that the cache is available to push_requests
+    branches: [main, devel]
+  pull_request:
+    branches: [main, devel]
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch: # allow manually starting this workflow
+
+jobs:
+  build_and_test:
+    name: Update development environment
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setting up environment
+        run: mkdir build
+      - name: Configuring
+        run: cd build && cmake ..
+      - name: Building
+        run: cd build && make -j
+      - name: Running tests
+        run: cd build && ctest

@@ -4,18 +4,16 @@
 name: Industrial CI
 
 on:
-  # run this workflow whenever a push is made to either devel or main
   push:
      branches: [ main, devel ]
-  # allow manually starting this workflow manually
-  workflow_dispatch:
-  # run this workflow daily at 6 am on the default branch
   schedule:
     - cron: '0 6 * * *'
+  workflow_dispatch:
+
 jobs:
   industrial_ci:
     name: ROS Tests
-    runs-on: slow-runner
+    runs-on: ubuntu-18.04
     strategy:
       matrix: # matrix is the product of entries
         ROS_DISTRO: [melodic]
