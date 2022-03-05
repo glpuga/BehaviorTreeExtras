@@ -1,15 +1,15 @@
 # This config uses industrial_ci (https://github.com/ros-industrial/industrial_ci.git).
 # For troubleshooting, see README (https://github.com/ros-industrial/industrial_ci/blob/master/README.rst)
 
-name: Industrial CI
+name: ROS build test using Industrial CI
 
 on:
-  # push:
-  #   branches: [main, devel]
-  # pull_request:
-  #   branches: [main, devel]
-  # schedule:
-  #   - cron: "0 6 * * *"
+  push:
+    branches: [main, devel]
+  pull_request:
+    branches: [main, devel]
+  schedule:
+    - cron: "0 6 * * 0"
   workflow_dispatch:
 
 jobs:
@@ -21,6 +21,7 @@ jobs:
         ROS_DISTRO: [melodic]
         ROS_REPO: [main]
     env:
+      UPSTREAM_WORKSPACE: "github:glpuga/BehaviorTree.CPP#glpuga/ariac2022"
       ADDITIONAL_DEBS: python-catkin-lint
       PARALLEL_BUILDS: 8
       PARALLEL_TESTS: 1

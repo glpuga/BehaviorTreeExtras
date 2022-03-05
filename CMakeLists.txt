@@ -68,13 +68,13 @@ if(catkin_FOUND)
     set(ROSLINT_CPP_OPTS --extensions=h,hpp,cpp)
     roslint_cpp()
 
-    roslint_custom(catkin_lint --strict -W2 ${PROJECT_SOURCE_DIR})
+    roslint_custom(catkin_lint -W2 ${PROJECT_SOURCE_DIR})
     roslint_add_test()
   endif()
 
 else()
 
-  option(BUILD_TESTS "Build tests" ON)
+  option(${PROJECT_NAME}_ENABLE_TESTING "Build tests" ON)
 
   # Add our local modules folder to the search path for both <pkg>.cmake and
   # Find<pkg>.cmake files
@@ -98,16 +98,15 @@ else()
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin)
-  install(DIRECTORY include DESTINATION include)
 
   #
   # Testing
 
-  if(BUILD_TESTS)
+  if(${PROJECT_NAME}_ENABLE_TESTING)
     include(CTest)
     include(GoogleTest REQUIRED)
 
-    set(fast_test_target_name ${PROJECT_NAME}-fast-tests)
+    set(fast_test_target_name ${PROJECT_NAME}-islated-unit-tests)
     add_executable(${fast_test_target_name} tests/runner.cpp
                                             ${fast_test_files_list})
     target_link_libraries(${fast_test_target_name} ${PROJECT_NAME}
