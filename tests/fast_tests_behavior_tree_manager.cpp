@@ -159,7 +159,7 @@ TEST_F(BehaviorTreeManagerTests, HaltingATreeWorks)
 
   const auto run_time = end_time - start_time;
 
-  ASSERT_GE(thread_stopping_timestamp * 3 / 2, run_time);
+  ASSERT_GE(expected_runtime / 2, run_time);
 }
 
 }  // namespace
