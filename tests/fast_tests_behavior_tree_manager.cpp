@@ -162,6 +162,36 @@ TEST_F(BehaviorTreeManagerTests, HaltingATreeWorks)
   ASSERT_GE(expected_runtime / 2, run_time);
 }
 
+TEST_F(BehaviorTreeManagerTests, ExceptionsGetThrough)
+{
+  struct
+  {
+    MOCK_METHOD0(mockedTickFunction, BT::NodeStatus());
+  } node_mock;
+
+  auto bt_factory_loader_function = [this, &node_mock](BT::BehaviorTreeFactory& factory) {
+    BT::NodeBuilder mock_builder = [this, &node_mock](const std::string& name,
+                                                      const BT::NodeConfiguration& config) {
+      return std::make_unique<BT::SubtreeMockNode>(
+          name, config,
+          [&node_mock](BT::SubtreeMockBlackboardProxy&) { return node_mock.mockedTickFunction(); });
+    };
+    factory.registerBuilder<BT::SubtreeMockNode>("SubtreeMock", mock_builder);
+  };
+
+  // test parameter
+  EXPECT_CALL(node_mock, mockedTickFunction())
+      .WillOnce(testing::Throw(std::runtime_error{ "test exception" }));
+
+  BehaviorTreeBuilder uut(bt_factory_loader_function);
+  auto tree = uut.createTree()                          //
+                  .addStringDescription(mockable_tree)  //
+                  .addMockingFlag()                     //
+                  .build();
+
+  ASSERT_THROW({ auto return_value = tree->run(); }, std::runtime_error);
+}
+
 }  // namespace
 
 }  // namespace test
