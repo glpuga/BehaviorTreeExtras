@@ -24,21 +24,14 @@ BTExecutionResult BehaviorTreeManager::run()
 {
   BT::NodeStatus tree_status = BT::NodeStatus::RUNNING;
 
-  try
+  halted_ = false;
+  // fast track, if tickRoot() does not return RUNNING, we never sleep and terminate quickly
+  tree_status = bt_handle_.tree->tickRoot();
+  // slow track, if we enter the loop we wait a tick interval before calling back.
+  while ((tree_status == BT::NodeStatus::RUNNING) && !halted_)
   {
-    halted_ = false;
-    // fast track, if tickRoot() does not return RUNNING, we never sleep and terminate quickly
+    std::this_thread::sleep_for(std::chrono::milliseconds{ 100 });
     tree_status = bt_handle_.tree->tickRoot();
-    // slow track, if we enter the loop we wait a tick interval before calling back.
-    while ((tree_status == BT::NodeStatus::RUNNING) && !halted_)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds{ 100 });
-      tree_status = bt_handle_.tree->tickRoot();
-    }
-  }
-  catch (const std::exception& e)
-  {
-    return BTExecutionResult::ERROR;
   }
 
   return tree_status == BT::NodeStatus::SUCCESS ? BTExecutionResult::SUCCESS :
